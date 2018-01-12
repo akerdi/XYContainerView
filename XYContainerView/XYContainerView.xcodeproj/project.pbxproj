@@ -13,6 +13,19 @@
 		F900ECCB20088BDF00BED8C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F900ECCA20088BDF00BED8C3 /* Assets.xcassets */; };
 		F900ECCE20088BDF00BED8C3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F900ECCC20088BDF00BED8C3 /* LaunchScreen.storyboard */; };
 		F900ECD120088BDF00BED8C3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ECD020088BDF00BED8C3 /* main.m */; };
+		F900ECD920088D3B00BED8C3 /* XYContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ECD820088D3B00BED8C3 /* XYContainerView.m */; };
+		F900ED0E20089BEB00BED8C3 /* CALayer+SHAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ECF620089BEB00BED8C3 /* CALayer+SHAddition.m */; };
+		F900ED0F20089BEB00BED8C3 /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ECF820089BEB00BED8C3 /* NSDataAdditions.m */; };
+		F900ED1020089BEB00BED8C3 /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ECFA20089BEB00BED8C3 /* NSDateAdditions.m */; };
+		F900ED1120089BEB00BED8C3 /* NSNumberFormatter+XXCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ECFC20089BEB00BED8C3 /* NSNumberFormatter+XXCurrency.m */; };
+		F900ED1220089BEB00BED8C3 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ECFE20089BEB00BED8C3 /* NSStringAdditions.m */; };
+		F900ED1320089BEB00BED8C3 /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F900ECFF20089BEB00BED8C3 /* Three20.bundle */; };
+		F900ED1420089BEB00BED8C3 /* TTGlobalCoreLocale.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0320089BEB00BED8C3 /* TTGlobalCoreLocale.m */; };
+		F900ED1520089BEB00BED8C3 /* TTGlobalUICommon.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0520089BEB00BED8C3 /* TTGlobalUICommon.m */; };
+		F900ED1620089BEB00BED8C3 /* UIFontAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0720089BEB00BED8C3 /* UIFontAdditions.m */; };
+		F900ED1720089BEB00BED8C3 /* UIImageAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0920089BEB00BED8C3 /* UIImageAdditions.m */; };
+		F900ED1820089BEB00BED8C3 /* UIViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0B20089BEB00BED8C3 /* UIViewAdditions.m */; };
+		F900ED1920089BEB00BED8C3 /* UIWindowAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0D20089BEB00BED8C3 /* UIWindowAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +39,34 @@
 		F900ECCD20088BDF00BED8C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F900ECCF20088BDF00BED8C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F900ECD020088BDF00BED8C3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F900ECD720088D3B00BED8C3 /* XYContainerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYContainerView.h; sourceTree = "<group>"; };
+		F900ECD820088D3B00BED8C3 /* XYContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYContainerView.m; sourceTree = "<group>"; };
+		F900ECF520089BEB00BED8C3 /* CALayer+SHAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+SHAddition.h"; sourceTree = "<group>"; };
+		F900ECF620089BEB00BED8C3 /* CALayer+SHAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+SHAddition.m"; sourceTree = "<group>"; };
+		F900ECF720089BEB00BED8C3 /* NSDataAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataAdditions.h; sourceTree = "<group>"; };
+		F900ECF820089BEB00BED8C3 /* NSDataAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataAdditions.m; sourceTree = "<group>"; };
+		F900ECF920089BEB00BED8C3 /* NSDateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateAdditions.h; sourceTree = "<group>"; };
+		F900ECFA20089BEB00BED8C3 /* NSDateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateAdditions.m; sourceTree = "<group>"; };
+		F900ECFB20089BEB00BED8C3 /* NSNumberFormatter+XXCurrency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+XXCurrency.h"; sourceTree = "<group>"; };
+		F900ECFC20089BEB00BED8C3 /* NSNumberFormatter+XXCurrency.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+XXCurrency.m"; sourceTree = "<group>"; };
+		F900ECFD20089BEB00BED8C3 /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
+		F900ECFE20089BEB00BED8C3 /* NSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAdditions.m; sourceTree = "<group>"; };
+		F900ECFF20089BEB00BED8C3 /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Three20.bundle; sourceTree = "<group>"; };
+		F900ED0020089BEB00BED8C3 /* TTCategoryHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCategoryHeader.h; sourceTree = "<group>"; };
+		F900ED0120089BEB00BED8C3 /* TTCorePreprocessorMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCorePreprocessorMacros.h; sourceTree = "<group>"; };
+		F900ED0220089BEB00BED8C3 /* TTGlobalCoreLocale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalCoreLocale.h; sourceTree = "<group>"; };
+		F900ED0320089BEB00BED8C3 /* TTGlobalCoreLocale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalCoreLocale.m; sourceTree = "<group>"; };
+		F900ED0420089BEB00BED8C3 /* TTGlobalUICommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTGlobalUICommon.h; sourceTree = "<group>"; };
+		F900ED0520089BEB00BED8C3 /* TTGlobalUICommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTGlobalUICommon.m; sourceTree = "<group>"; };
+		F900ED0620089BEB00BED8C3 /* UIFontAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIFontAdditions.h; sourceTree = "<group>"; };
+		F900ED0720089BEB00BED8C3 /* UIFontAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFontAdditions.m; sourceTree = "<group>"; };
+		F900ED0820089BEB00BED8C3 /* UIImageAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageAdditions.h; sourceTree = "<group>"; };
+		F900ED0920089BEB00BED8C3 /* UIImageAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageAdditions.m; sourceTree = "<group>"; };
+		F900ED0A20089BEB00BED8C3 /* UIViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewAdditions.h; sourceTree = "<group>"; };
+		F900ED0B20089BEB00BED8C3 /* UIViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewAdditions.m; sourceTree = "<group>"; };
+		F900ED0C20089BEB00BED8C3 /* UIWindowAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWindowAdditions.h; sourceTree = "<group>"; };
+		F900ED0D20089BEB00BED8C3 /* UIWindowAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWindowAdditions.m; sourceTree = "<group>"; };
+		F900ED1B20089C1600BED8C3 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,13 +103,49 @@
 				F900ECC220088BDF00BED8C3 /* AppDelegate.m */,
 				F900ECC420088BDF00BED8C3 /* ViewController.h */,
 				F900ECC520088BDF00BED8C3 /* ViewController.m */,
+				F900ECD720088D3B00BED8C3 /* XYContainerView.h */,
+				F900ECD820088D3B00BED8C3 /* XYContainerView.m */,
 				F900ECC720088BDF00BED8C3 /* Main.storyboard */,
 				F900ECCA20088BDF00BED8C3 /* Assets.xcassets */,
+				F900ED1B20089C1600BED8C3 /* Reveal.framework */,
+				F900ECF420089BEB00BED8C3 /* 320Categories */,
 				F900ECCC20088BDF00BED8C3 /* LaunchScreen.storyboard */,
 				F900ECCF20088BDF00BED8C3 /* Info.plist */,
 				F900ECD020088BDF00BED8C3 /* main.m */,
 			);
 			path = XYContainerView;
+			sourceTree = "<group>";
+		};
+		F900ECF420089BEB00BED8C3 /* 320Categories */ = {
+			isa = PBXGroup;
+			children = (
+				F900ECF520089BEB00BED8C3 /* CALayer+SHAddition.h */,
+				F900ECF620089BEB00BED8C3 /* CALayer+SHAddition.m */,
+				F900ECF720089BEB00BED8C3 /* NSDataAdditions.h */,
+				F900ECF820089BEB00BED8C3 /* NSDataAdditions.m */,
+				F900ECF920089BEB00BED8C3 /* NSDateAdditions.h */,
+				F900ECFA20089BEB00BED8C3 /* NSDateAdditions.m */,
+				F900ECFB20089BEB00BED8C3 /* NSNumberFormatter+XXCurrency.h */,
+				F900ECFC20089BEB00BED8C3 /* NSNumberFormatter+XXCurrency.m */,
+				F900ECFD20089BEB00BED8C3 /* NSStringAdditions.h */,
+				F900ECFE20089BEB00BED8C3 /* NSStringAdditions.m */,
+				F900ECFF20089BEB00BED8C3 /* Three20.bundle */,
+				F900ED0020089BEB00BED8C3 /* TTCategoryHeader.h */,
+				F900ED0120089BEB00BED8C3 /* TTCorePreprocessorMacros.h */,
+				F900ED0220089BEB00BED8C3 /* TTGlobalCoreLocale.h */,
+				F900ED0320089BEB00BED8C3 /* TTGlobalCoreLocale.m */,
+				F900ED0420089BEB00BED8C3 /* TTGlobalUICommon.h */,
+				F900ED0520089BEB00BED8C3 /* TTGlobalUICommon.m */,
+				F900ED0620089BEB00BED8C3 /* UIFontAdditions.h */,
+				F900ED0720089BEB00BED8C3 /* UIFontAdditions.m */,
+				F900ED0820089BEB00BED8C3 /* UIImageAdditions.h */,
+				F900ED0920089BEB00BED8C3 /* UIImageAdditions.m */,
+				F900ED0A20089BEB00BED8C3 /* UIViewAdditions.h */,
+				F900ED0B20089BEB00BED8C3 /* UIViewAdditions.m */,
+				F900ED0C20089BEB00BED8C3 /* UIWindowAdditions.h */,
+				F900ED0D20089BEB00BED8C3 /* UIWindowAdditions.m */,
+			);
+			path = 320Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -129,6 +206,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F900ED1320089BEB00BED8C3 /* Three20.bundle in Resources */,
 				F900ECCE20088BDF00BED8C3 /* LaunchScreen.storyboard in Resources */,
 				F900ECCB20088BDF00BED8C3 /* Assets.xcassets in Resources */,
 				F900ECC920088BDF00BED8C3 /* Main.storyboard in Resources */,
@@ -142,9 +220,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F900ED1620089BEB00BED8C3 /* UIFontAdditions.m in Sources */,
+				F900ED0F20089BEB00BED8C3 /* NSDataAdditions.m in Sources */,
+				F900ED1820089BEB00BED8C3 /* UIViewAdditions.m in Sources */,
+				F900ED1020089BEB00BED8C3 /* NSDateAdditions.m in Sources */,
 				F900ECC620088BDF00BED8C3 /* ViewController.m in Sources */,
+				F900ED1220089BEB00BED8C3 /* NSStringAdditions.m in Sources */,
+				F900ED1520089BEB00BED8C3 /* TTGlobalUICommon.m in Sources */,
+				F900ED0E20089BEB00BED8C3 /* CALayer+SHAddition.m in Sources */,
 				F900ECD120088BDF00BED8C3 /* main.m in Sources */,
+				F900ED1120089BEB00BED8C3 /* NSNumberFormatter+XXCurrency.m in Sources */,
+				F900ED1420089BEB00BED8C3 /* TTGlobalCoreLocale.m in Sources */,
 				F900ECC320088BDF00BED8C3 /* AppDelegate.m in Sources */,
+				F900ED1720089BEB00BED8C3 /* UIImageAdditions.m in Sources */,
+				F900ED1920089BEB00BED8C3 /* UIWindowAdditions.m in Sources */,
+				F900ECD920088D3B00BED8C3 /* XYContainerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,12 +369,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 8J7J723R9J;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/XYContainerView",
+				);
 				INFOPLIST_FILE = XYContainerView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xxt.XYContainerView;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lz",
+					"-framework",
+					Reveal,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.colorsaga.develop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "bdb35169-eadf-44f4-bb4d-556393084a45";
+				PROVISIONING_PROFILE_SPECIFIER = com.colorsaga.develop_developCert;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -295,9 +397,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/XYContainerView",
+				);
 				INFOPLIST_FILE = XYContainerView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xxt.XYContainerView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.colorsaga.develop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
