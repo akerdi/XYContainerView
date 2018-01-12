@@ -7,7 +7,6 @@
 //
 
 #import "XYContainerView.h"
-#import "UIViewAdditions.h"
 
 static NSString *XYCollectionCellId = @"XYCollectionCellId";
 
@@ -25,7 +24,6 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
 @property (nonatomic, strong) UIView    *bannerView;
 @property (nonatomic, strong) UIView    *stickView;
 
-@property (nonatomic, strong) NSArray   *subContainers;
 @property (nonatomic, assign) NSInteger subContainersCount;
 
 @property (nonatomic, weak) UIScrollView *currentScrollView;
@@ -39,7 +37,7 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
         
         self.backgroundColor = [UIColor clearColor];
         self.subContainersCount = 0;
-        self.subContainers = nil;
+        
         [self addSubview:self.containerView];
         [self addSubview:self.headContainerView];
     }

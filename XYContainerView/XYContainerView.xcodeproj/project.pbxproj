@@ -26,6 +26,8 @@
 		F900ED1720089BEB00BED8C3 /* UIImageAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0920089BEB00BED8C3 /* UIImageAdditions.m */; };
 		F900ED1820089BEB00BED8C3 /* UIViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0B20089BEB00BED8C3 /* UIViewAdditions.m */; };
 		F900ED1920089BEB00BED8C3 /* UIWindowAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0D20089BEB00BED8C3 /* UIWindowAdditions.m */; };
+		F900ED212008C3BA00BED8C3 /* XXContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED202008C3BA00BED8C3 /* XXContainerView.m */; };
+		F900ED242008C40C00BED8C3 /* XXContainerBottomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED232008C40C00BED8C3 /* XXContainerBottomScrollView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +69,10 @@
 		F900ED0C20089BEB00BED8C3 /* UIWindowAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWindowAdditions.h; sourceTree = "<group>"; };
 		F900ED0D20089BEB00BED8C3 /* UIWindowAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWindowAdditions.m; sourceTree = "<group>"; };
 		F900ED1B20089C1600BED8C3 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
+		F900ED1F2008C3BA00BED8C3 /* XXContainerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXContainerView.h; sourceTree = "<group>"; };
+		F900ED202008C3BA00BED8C3 /* XXContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXContainerView.m; sourceTree = "<group>"; };
+		F900ED222008C40C00BED8C3 /* XXContainerBottomScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXContainerBottomScrollView.h; sourceTree = "<group>"; };
+		F900ED232008C40C00BED8C3 /* XXContainerBottomScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXContainerBottomScrollView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +109,8 @@
 				F900ECC220088BDF00BED8C3 /* AppDelegate.m */,
 				F900ECC420088BDF00BED8C3 /* ViewController.h */,
 				F900ECC520088BDF00BED8C3 /* ViewController.m */,
-				F900ECD720088D3B00BED8C3 /* XYContainerView.h */,
-				F900ECD820088D3B00BED8C3 /* XYContainerView.m */,
+				F900ED1E2008C3A600BED8C3 /* XXContainerView */,
+				F900ED1D2008C38600BED8C3 /* XYContainerView */,
 				F900ECC720088BDF00BED8C3 /* Main.storyboard */,
 				F900ECCA20088BDF00BED8C3 /* Assets.xcassets */,
 				F900ED1B20089C1600BED8C3 /* Reveal.framework */,
@@ -146,6 +152,26 @@
 				F900ED0D20089BEB00BED8C3 /* UIWindowAdditions.m */,
 			);
 			path = 320Categories;
+			sourceTree = "<group>";
+		};
+		F900ED1D2008C38600BED8C3 /* XYContainerView */ = {
+			isa = PBXGroup;
+			children = (
+				F900ECD720088D3B00BED8C3 /* XYContainerView.h */,
+				F900ECD820088D3B00BED8C3 /* XYContainerView.m */,
+			);
+			path = XYContainerView;
+			sourceTree = "<group>";
+		};
+		F900ED1E2008C3A600BED8C3 /* XXContainerView */ = {
+			isa = PBXGroup;
+			children = (
+				F900ED1F2008C3BA00BED8C3 /* XXContainerView.h */,
+				F900ED202008C3BA00BED8C3 /* XXContainerView.m */,
+				F900ED222008C40C00BED8C3 /* XXContainerBottomScrollView.h */,
+				F900ED232008C40C00BED8C3 /* XXContainerBottomScrollView.m */,
+			);
+			path = XXContainerView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,6 +256,8 @@
 				F900ED0E20089BEB00BED8C3 /* CALayer+SHAddition.m in Sources */,
 				F900ECD120088BDF00BED8C3 /* main.m in Sources */,
 				F900ED1120089BEB00BED8C3 /* NSNumberFormatter+XXCurrency.m in Sources */,
+				F900ED212008C3BA00BED8C3 /* XXContainerView.m in Sources */,
+				F900ED242008C40C00BED8C3 /* XXContainerBottomScrollView.m in Sources */,
 				F900ED1420089BEB00BED8C3 /* TTGlobalCoreLocale.m in Sources */,
 				F900ECC320088BDF00BED8C3 /* AppDelegate.m in Sources */,
 				F900ED1720089BEB00BED8C3 /* UIImageAdditions.m in Sources */,
