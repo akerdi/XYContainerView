@@ -61,7 +61,6 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
 #pragma mark - public
 
 - (void)reloadData {
-    
     self.subContainersCount = [self calculateSubContainersCount];
     UIView *headContainerView = [self getHeadContainerView];
     for (NSInteger i=0; i<self.subContainersCount; i++) {
@@ -94,6 +93,12 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
     if (context == @selector(reloadData)) {
         CGPoint tableOffset = [[change objectForKey:@"new"] CGPointValue];
         CGFloat tableOffsetY = tableOffset.y;
+        
+        self.contentOffsetY = tableOffsetY;
+        if ([self.delegate respondsToSelector:@selector(xyContainerView:scrollDidScroll:)]) {
+            [self.delegate xyContainerView:self scrollDidScroll:object];
+        }
+        
         CGRect rect = self.headContainerView.frame;
         if (tableOffsetY>=-CGRectGetHeight(self.stickView.frame)) {
             if (self.headContainerView.superview==self) {
@@ -110,6 +115,29 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
                 [self.currentScrollView addSubview:self.headContainerView];
             }
         }
+    }
+}
+
+- (void)selectSectionAtIndex:(NSInteger)index {
+    [self selectSectionAtIndex:index animated:NO];
+}
+
+- (void)selectSectionAtIndex:(NSInteger)index animated:(BOOL)animated {
+    if (index < 0||index >= self.subContainersCount) {
+        return;
+    }
+    [self scrollViewWillBeginDragging:self.containerView];
+    CGPoint contentOffset = self.containerView.contentOffset;
+    typeof(self) weakSelf = self;
+    if (animated) {
+        [UIView animateWithDuration:0.2 animations:^{
+            weakSelf.containerView.contentOffset = CGPointMake(index*CGRectGetWidth(self.bounds), contentOffset.y);
+        } completion:^(BOOL finished) {
+            [weakSelf scrollViewDidEndDecelerating:self.containerView];
+        }];
+    } else {
+        self.containerView.contentOffset = CGPointMake(index*CGRectGetWidth(self.bounds), contentOffset.y);
+        [self scrollViewDidEndDecelerating:self.containerView];
     }
 }
 

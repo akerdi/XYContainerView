@@ -38,7 +38,7 @@
 
 - (void)dispatchTimeCreateSubView {
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:2];
-    for (NSInteger i=0; i<2; i++) {
+    for (NSInteger i=0; i<5; i++) {
         UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
         tableView.dataSource = self;
         tableView.delegate = self;
@@ -108,6 +108,7 @@
 
 static NSInteger _count = 0;
 - (void)gogogogo:(UIButton *)sender {
+    [self.containerView selectSectionAtIndex:_count animated:YES];
     _count ++;
     NSLog(@"1111111111");
     [sender setTitle:[@(_count) stringValue] forState:UIControlStateNormal];
