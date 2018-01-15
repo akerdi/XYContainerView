@@ -75,10 +75,12 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
                 [subContainerScrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
                 self.currentScrollView = subContainerScrollView;
                 [subContainerScrollView addSubview:self.headContainerView];
-                self.headContainerView.top = -self.headContainerView.height;
+                CGRect rect = self.headContainerView.frame;
+                rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
+                self.headContainerView.frame = rect;
             }
             UIEdgeInsets insets = subContainerScrollView.contentInset;
-            insets.top = headContainerView.height;
+            insets.top = CGRectGetHeight(headContainerView.frame);
             subContainerScrollView.contentInset = UIEdgeInsetsMake(insets.top, insets.left, insets.bottom, insets.right);
         }
     }
@@ -92,15 +94,19 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
     if (context == @selector(reloadData)) {
         CGPoint tableOffset = [[change objectForKey:@"new"] CGPointValue];
         CGFloat tableOffsetY = tableOffset.y;
-        if (tableOffsetY>=-self.stickView.height) {
+        CGRect rect = self.headContainerView.frame;
+        if (tableOffsetY>=-CGRectGetHeight(self.stickView.frame)) {
             if (self.headContainerView.superview==self) {
                 return;
             }
-            self.headContainerView.top = -self.headContainerView.height+self.stickView.height;
+            
+            rect.origin.y = -CGRectGetHeight(self.headContainerView.frame)+CGRectGetHeight(self.stickView.frame);
+            self.headContainerView.frame = rect;
             [self addSubview:self.headContainerView];
         } else {
             if (self.headContainerView.superview==self) {
-                self.headContainerView.top = -self.headContainerView.height;
+                rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
+                self.headContainerView.frame = rect;
                 [self.currentScrollView addSubview:self.headContainerView];
             }
         }
@@ -128,9 +134,13 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
         self.stickView = [self.delegate xyContainerViewWithStickView:self];
     }
     [self.headContainerView addSubview:self.bannerView];
-    self.stickView.top = self.bannerView.bottom;
+    CGRect rect = self.stickView.frame;
+    rect.origin.y = CGRectGetMaxY(self.bannerView.frame);
+    self.stickView.frame = rect;
     [self.headContainerView addSubview:self.stickView];
-    self.headContainerView.height = self.bannerView.height+self.stickView.height;
+    CGRect headContainerViewRect = self.headContainerView.frame;
+    headContainerViewRect.size.height = CGRectGetHeight(self.bannerView.frame)+CGRectGetHeight(self.stickView.frame);
+    self.headContainerView.frame = headContainerViewRect;
     return self.headContainerView;
 }
 
@@ -143,8 +153,8 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
         if (subScrollView==currentScrollView) {
             continue;
         }
-        if (currentScrollView.contentOffset.y>=-self.stickView.height) {
-            subScrollView.contentOffset = CGPointMake(0, -self.stickView.height);
+        if (currentScrollView.contentOffset.y>=-CGRectGetHeight(self.stickView.frame)) {
+            subScrollView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.stickView.frame));
         } else {
             subScrollView.contentOffset = currentScrollView.contentOffset;
         }
@@ -155,20 +165,24 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     self.currentScrollView.scrollEnabled = NO;
-    self.headContainerView.top = MAX(-(self.headContainerView.height+self.currentScrollView.contentOffset.y), -(self.headContainerView.height-self.stickView.height));
+    CGFloat maxTop = MAX(-(CGRectGetHeight(self.headContainerView.frame)+self.currentScrollView.contentOffset.y), -(CGRectGetHeight(self.headContainerView.frame)-CGRectGetHeight(self.stickView.frame)));
+    CGRect rect = self.headContainerView.frame;
+    rect.origin.y = maxTop;
+    self.headContainerView.frame = rect;
     [self addSubview:self.headContainerView];
     [self targetScrollDidScrollInnerFunc];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-    self.headContainerView.left = 0;
+    CGRect rect = self.headContainerView.frame;
+    rect.origin.x = 0;
+    self.headContainerView.frame = rect;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     self.currentScrollView.scrollEnabled = YES;
     CGPoint offsetP = scrollView.contentOffset;
-    NSInteger index = offsetP.x/self.width;
+    NSInteger index = offsetP.x/CGRectGetWidth(self.bounds);
     XYCollectionCell *cell = (XYCollectionCell *)[self.containerView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     if (self.currentScrollView.observationInfo) {
         [self.currentScrollView removeObserver:self forKeyPath:@"contentOffset"];
@@ -176,7 +190,9 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
     self.currentScrollView = (UIScrollView *)cell.subContainerView;
     [self.currentScrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
     
-    self.headContainerView.top = -self.headContainerView.height;
+    CGRect rect = self.headContainerView.frame;
+    rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
+    self.headContainerView.frame = rect;
     [self.currentScrollView addSubview:self.headContainerView];
 }
 
@@ -200,7 +216,7 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
 - (UIView *)headContainerView {
     if (!_headContainerView) {
         _headContainerView = [UIView new];
-        _headContainerView.frame = CGRectMake(0, 0, self.width, 0);
+        _headContainerView.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), 0);
     }
     return _headContainerView;
 }
@@ -212,7 +228,7 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
         flowLayout.sectionInset = UIEdgeInsetsZero;
         flowLayout.minimumLineSpacing = 0.0000001;
         flowLayout.minimumInteritemSpacing = 0.0000001;
-        flowLayout.itemSize = CGSizeMake(self.width, self.height);
+        flowLayout.itemSize = CGSizeMake(CGRectGetWidth(self.bounds), CGRectGetHeight(self.frame));
         _containerView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:flowLayout];
         _containerView.delegate = self;
         _containerView.dataSource = self;
