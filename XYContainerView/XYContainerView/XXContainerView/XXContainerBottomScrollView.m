@@ -14,9 +14,9 @@
 
 @implementation XXContainerBottomScrollView
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
-        return self.block?self.block(gestureRecognizer, otherGestureRecognizer):NO;
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && [otherGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        return self.block?self.block(self, (UIPanGestureRecognizer *)gestureRecognizer, (UIPanGestureRecognizer *)otherGestureRecognizer):NO;
     }
     return NO;
 }

@@ -6,29 +6,25 @@
 //  Copyright © 2018年 XXT. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "XXContainerViewController.h"
 
-#import "XYContainerView.h"
+#import "XXContainerView.h"
 
-@interface ViewController ()<XYContainerViewDelegate, XYContainerViewDataSource, UITableViewDataSource, UITableViewDelegate>
+@interface XXContainerViewController ()<XXContainerViewDelegate, XXContainerViewDataSource, UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) XYContainerView *containerView;
+@property (nonatomic, strong) XXContainerView *containerView;
 
 @property (nonatomic, strong) NSArray<UIScrollView *> *scrollViewArray;
 
 @end
 
-@implementation ViewController
-
-- (void)dealloc {
-    self.containerView = nil;
-}
+@implementation XXContainerViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.containerView = [[XYContainerView alloc] initWithFrame:self.view.bounds];
+    self.containerView = [[XXContainerView alloc] initWithFrame:self.view.bounds];
     self.containerView.delegate = self;
     self.containerView.dataSource = self;
     [self.view addSubview:self.containerView];
@@ -37,16 +33,18 @@
 }
 
 - (void)dispatchTimeCreateSubView {
-    NSMutableArray *arr = [NSMutableArray arrayWithCapacity:2];
-    for (NSInteger i=0; i<2; i++) {
-        UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-        tableView.dataSource = self;
-        tableView.delegate = self;
-        tableView.tag = 100+i;
-        [arr addObject:tableView];
-    }
-    self.scrollViewArray = arr;
-    [self.containerView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:2];
+        for (NSInteger i=0; i<2; i++) {
+            UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+            tableView.dataSource = self;
+            tableView.delegate = self;
+            tableView.tag = 100+i;
+            [arr addObject:tableView];
+        }
+        self.scrollViewArray = arr;
+        [self.containerView reloadData];
+    });
 }
 
 #pragma mark - UITableViewDataSource
@@ -71,29 +69,24 @@
     return 0.000001;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ViewController *vc = [ViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 #pragma mark - XYContainerDataSource &
 
-- (NSInteger)xyContainerViewWithNumberOfSubContainerView:(XYContainerView *)containerView {
+- (NSInteger)xxContainerViewWithNumberOfSubContainerView:(XXContainerView *)containerView {
     return self.scrollViewArray.count;
 }
 
-- (UIView *)xyContainerView:(XYContainerView *)containerView subContainerViewAtIndexPath:(NSIndexPath *)indexPath {
+- (UIView *)xxContainerView:(XXContainerView *)containerView subContainerViewAtIndexPath:(NSIndexPath *)indexPath {
     return [self.scrollViewArray objectAtIndex:indexPath.row];
 }
 
-- (UIView *)xyContainerViewWithBannerView:(XYContainerView *)containerView {
+- (UIView *)xxContainerViewWithBannerView:(XXContainerView *)containerView {
     UIView *bannerView = [UIView new];
     bannerView.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 120);
     bannerView.backgroundColor = [UIColor greenColor];
     return bannerView;
 }
 
-- (UIView *)xyContainerViewWithStickView:(XYContainerView *)containerView {
+- (UIView *)xxContainerViewWithStickView:(XXContainerView *)containerView {
     UIView *stickView = [UIView new];
     stickView.backgroundColor = [UIColor yellowColor];
     stickView.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 80);

@@ -10,7 +10,15 @@
 
 #import "XXContainerBottomScrollView.h"
 
-@interface XXContainerView ()
+static NSString *XXCollectionCellId = @"XXCollectionCellId";
+
+@interface XXCollectionCell : UICollectionViewCell
+
+@property (nonatomic, strong) UIView *subContainerView;
+
+@end
+
+@interface XXContainerView ()<UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) XXContainerBottomScrollView *containerView;
 
@@ -21,7 +29,7 @@
 @property (nonatomic, assign) NSInteger     subContainersCount;
 
 @property (nonatomic, weak) UIScrollView    *currentScrollView;
-@property (nonatomic, strong) UITableView   *crossTableView;
+@property (nonatomic, strong) UICollectionView   *crossCollectionView;
 
 @end
 
@@ -34,7 +42,8 @@
         self.subContainersCount = 0;
         
         [self addSubview:self.containerView];
-        [self addSubview:self.headContainerView];
+        [self.containerView addSubview:self.crossCollectionView];
+        [self.containerView addSubview:self.headContainerView];
     }
     return self;
 }
@@ -44,25 +53,73 @@
     self.containerView.frame = self.bounds;
 }
 
+#pragma mark - UICollectinoViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.subContainersCount;
+}
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    XXCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:XXCollectionCellId forIndexPath:indexPath];
+    UIView *subContainerView = [self.dataSource xxContainerView:self subContainerViewAtIndexPath:indexPath];
+    if (cell.subContainerView!=subContainerView) {
+        [cell.subContainerView removeFromSuperview];
+        [cell addSubview:subContainerView];
+        cell.subContainerView = subContainerView;
+    }
+    return cell;
+}
+
 #pragma mark - public
 
 - (void)reloadData {
-    
     self.subContainersCount = [self calculateSubContainersCount];
+    
     UIView *headContainerView = [self getHeadContainerView];
+    
+    self.containerView.contentSize = CGSizeMake(self.width, self.bannerView.height+self.height);
+    
+    self.crossCollectionView.top = headContainerView.height;
+    CGFloat crossTableViewHeight = self.height-self.stickView.height;
+    self.crossCollectionView.height = crossTableViewHeight;
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.crossCollectionView.collectionViewLayout;
+    flowLayout.itemSize = CGSizeMake(self.width, crossTableViewHeight);
+    
     for (NSInteger i=0; i<self.subContainersCount; i++) {
         UIView *subContainerView = [self.dataSource xxContainerView:self subContainerViewAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         if ([subContainerView isKindOfClass:[UIScrollView class]]) {
             UIScrollView *subContainerScrollView = (UIScrollView *)subContainerView;
+            if (subContainerScrollView.observationInfo) {
+                [subContainerScrollView removeObserver:self forKeyPath:@"contentOffset"];
+            }
             [subContainerScrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
+            
             if (i==0) {
                 self.currentScrollView = subContainerScrollView;
-                [subContainerScrollView addSubview:self.headContainerView];
-                self.headContainerView.top = -self.headContainerView.height;
             }
-            UIEdgeInsets insets = subContainerScrollView.contentInset;
-            insets.top = headContainerView.height;
-            subContainerScrollView.contentInset = UIEdgeInsetsMake(insets.top, insets.left, insets.bottom, insets.right);
+            //设置高度
+            subContainerScrollView.height = flowLayout.itemSize.height;
+        } else {
+            NSAssert(0, @"subContainerView must be a subclass of UIScrollView~~");
+        }
+    }
+    [self.crossCollectionView reloadData];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if (object != self.currentScrollView) {
+        return;
+    }
+    if (context == @selector(reloadData)) {
+        CGPoint tableOffset = [[change objectForKey:@"new"] CGPointValue];
+        CGPoint containerViewOffset = self.containerView.contentOffset;
+        CGFloat containerViewOffsetY = containerViewOffset.y;
+        CGFloat tableOffsetY = tableOffset.y;
+        if (containerViewOffsetY<=80) {
+            if (self.currentScrollView.contentOffset.y !=0) {
+                self.currentScrollView.contentOffset = CGPointZero;
+            }
+        } else {
         }
     }
 }
@@ -96,6 +153,25 @@
 
 #pragma mark - Accessory
 
+- (UICollectionView *)crossCollectionView {
+    if (!_crossCollectionView) {
+        UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+        flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        flowLayout.sectionInset = UIEdgeInsetsZero;
+        flowLayout.minimumLineSpacing = 0.0000001;
+        flowLayout.minimumInteritemSpacing = 0.0000001;
+        _crossCollectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:flowLayout];
+        _crossCollectionView.delegate = self;
+        _crossCollectionView.dataSource = self;
+        _crossCollectionView.pagingEnabled = YES;
+        _crossCollectionView.showsVerticalScrollIndicator = NO;
+        _crossCollectionView.showsHorizontalScrollIndicator = NO;
+        _crossCollectionView.bounces = NO;
+        [_crossCollectionView registerClass:[XXCollectionCell class] forCellWithReuseIdentifier:XXCollectionCellId];
+    }
+    return _crossCollectionView;
+}
+
 - (UIView *)headContainerView {
     if (!_headContainerView) {
         _headContainerView = [UIView new];
@@ -108,16 +184,33 @@
     if (!_containerView) {
         _containerView = [[XXContainerBottomScrollView alloc] initWithFrame:self.bounds];
         typeof(self) weakSelf = self;
-        _containerView.block = ^BOOL(UIPanGestureRecognizer *gesture, UIPanGestureRecognizer *otherGesture) {
-            if (gesture==self.crossTableView.panGestureRecognizer||otherGesture==self.crossTableView.panGestureRecognizer) {
+        _containerView.block = ^BOOL(XXContainerBottomScrollView *bottomScrollView, UIPanGestureRecognizer *gesture, UIPanGestureRecognizer *otherGesture) {
+            CGPoint p1 = [gesture velocityInView:bottomScrollView];
+            CGPoint p2 = [otherGesture velocityInView:bottomScrollView];
+            if (ABS(p1.x)== 0.f || ABS(p2.x)== 0.f) {
+                return YES;
+            }
+            if (ABS(p1.y)== 0.f || ABS(p2.y)== 0.f) {
                 return NO;
             }
-            CGPoint p0 = [gesture velocityInView:weakSelf.containerView];
-            CGPoint p1 = [otherGesture velocityInView:weakSelf.containerView];
+            if ((ABS(p1.x) / ABS(p1.y) > 1.5) || (ABS(p2.x) / ABS(p2.y) > 1.5)) {
+                return NO;
+            }
             return YES;
         };
     }
     return _containerView;
+}
+
+@end
+
+
+@implementation XXCollectionCell
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+    }
+    return self;
 }
 
 @end

@@ -28,6 +28,7 @@
 		F900ED1920089BEB00BED8C3 /* UIWindowAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED0D20089BEB00BED8C3 /* UIWindowAdditions.m */; };
 		F900ED212008C3BA00BED8C3 /* XXContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED202008C3BA00BED8C3 /* XXContainerView.m */; };
 		F900ED242008C40C00BED8C3 /* XXContainerBottomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED232008C40C00BED8C3 /* XXContainerBottomScrollView.m */; };
+		F900ED272009B03B00BED8C3 /* XXContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F900ED262009B03B00BED8C3 /* XXContainerViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,8 @@
 		F900ED202008C3BA00BED8C3 /* XXContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXContainerView.m; sourceTree = "<group>"; };
 		F900ED222008C40C00BED8C3 /* XXContainerBottomScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXContainerBottomScrollView.h; sourceTree = "<group>"; };
 		F900ED232008C40C00BED8C3 /* XXContainerBottomScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXContainerBottomScrollView.m; sourceTree = "<group>"; };
+		F900ED252009B03B00BED8C3 /* XXContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXContainerViewController.h; sourceTree = "<group>"; };
+		F900ED262009B03B00BED8C3 /* XXContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXContainerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +112,8 @@
 				F900ECC220088BDF00BED8C3 /* AppDelegate.m */,
 				F900ECC420088BDF00BED8C3 /* ViewController.h */,
 				F900ECC520088BDF00BED8C3 /* ViewController.m */,
+				F900ED252009B03B00BED8C3 /* XXContainerViewController.h */,
+				F900ED262009B03B00BED8C3 /* XXContainerViewController.m */,
 				F900ED1E2008C3A600BED8C3 /* XXContainerView */,
 				F900ED1D2008C38600BED8C3 /* XYContainerView */,
 				F900ECC720088BDF00BED8C3 /* Main.storyboard */,
@@ -248,6 +253,7 @@
 			files = (
 				F900ED1620089BEB00BED8C3 /* UIFontAdditions.m in Sources */,
 				F900ED0F20089BEB00BED8C3 /* NSDataAdditions.m in Sources */,
+				F900ED272009B03B00BED8C3 /* XXContainerViewController.m in Sources */,
 				F900ED1820089BEB00BED8C3 /* UIViewAdditions.m in Sources */,
 				F900ED1020089BEB00BED8C3 /* NSDateAdditions.m in Sources */,
 				F900ECC620088BDF00BED8C3 /* ViewController.m in Sources */,

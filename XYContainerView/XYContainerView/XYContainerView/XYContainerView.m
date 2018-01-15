@@ -32,6 +32,15 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
 
 @implementation XYContainerView
 
+- (void)dealloc {
+    for (NSInteger i=0; i<self.subContainersCount; i++) {
+        UIScrollView *scrollView = (UIScrollView *)self.currentScrollView;
+        if (scrollView.observationInfo) {
+            [scrollView removeObserver:self forKeyPath:@"contentOffset"];
+        }
+    }
+}
+
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         
@@ -59,8 +68,11 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
         UIView *subContainerView = [self.dataSource xyContainerView:self subContainerViewAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         if ([subContainerView isKindOfClass:[UIScrollView class]]) {
             UIScrollView *subContainerScrollView = (UIScrollView *)subContainerView;
-            [subContainerScrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
+            if (subContainerScrollView.observationInfo) {
+                [subContainerScrollView removeObserver:self forKeyPath:@"contentOffset"];
+            }
             if (i==0) {
+                [subContainerScrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
                 self.currentScrollView = subContainerScrollView;
                 [subContainerScrollView addSubview:self.headContainerView];
                 self.headContainerView.top = -self.headContainerView.height;
@@ -158,7 +170,12 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
     CGPoint offsetP = scrollView.contentOffset;
     NSInteger index = offsetP.x/self.width;
     XYCollectionCell *cell = (XYCollectionCell *)[self.containerView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    if (self.currentScrollView.observationInfo) {
+        [self.currentScrollView removeObserver:self forKeyPath:@"contentOffset"];
+    }
     self.currentScrollView = (UIScrollView *)cell.subContainerView;
+    [self.currentScrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
+    
     self.headContainerView.top = -self.headContainerView.height;
     [self.currentScrollView addSubview:self.headContainerView];
 }
@@ -203,6 +220,7 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
         _containerView.showsVerticalScrollIndicator = NO;
         _containerView.showsHorizontalScrollIndicator = NO;
         _containerView.bounces = NO;
+        _containerView.backgroundColor = [UIColor clearColor];
         [_containerView registerClass:[XYCollectionCell class] forCellWithReuseIdentifier:XYCollectionCellId];
     }
     return _containerView;

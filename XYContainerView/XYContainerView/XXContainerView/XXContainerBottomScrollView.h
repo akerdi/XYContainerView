@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-typedef BOOL(^SubScollViewRecgnizerBlock)(UIGestureRecognizer *gesture, UIGestureRecognizer *otherGesture);
+@class XXContainerBottomScrollView;
+typedef BOOL(^SubScollViewRecgnizerBlock)(XXContainerBottomScrollView *bottomScrollView, UIPanGestureRecognizer *gesture, UIPanGestureRecognizer *otherGesture);
 
 @interface XXContainerBottomScrollView : UIScrollView
 
