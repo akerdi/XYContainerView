@@ -76,6 +76,7 @@
 		F900ED232008C40C00BED8C3 /* XXContainerBottomScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXContainerBottomScrollView.m; sourceTree = "<group>"; };
 		F900ED252009B03B00BED8C3 /* XXContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XXContainerViewController.h; sourceTree = "<group>"; };
 		F900ED262009B03B00BED8C3 /* XXContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XXContainerViewController.m; sourceTree = "<group>"; };
+		F964F9C7200C814300E20232 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +124,7 @@
 				F900ECCC20088BDF00BED8C3 /* LaunchScreen.storyboard */,
 				F900ECCF20088BDF00BED8C3 /* Info.plist */,
 				F900ECD020088BDF00BED8C3 /* main.m */,
+				F964F9C7200C814300E20232 /* PrefixHeader.pch */,
 			);
 			path = XYContainerView;
 			sourceTree = "<group>";
@@ -408,6 +410,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/XYContainerView",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "${SRCROOT}/XYContainerView/PrefixHeader.pch";
 				INFOPLIST_FILE = XYContainerView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -435,6 +439,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/XYContainerView",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "${SRCROOT}/XYContainerView/PrefixHeader.pch";
 				INFOPLIST_FILE = XYContainerView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

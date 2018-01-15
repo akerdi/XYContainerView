@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UIViewAdditions.h"
 
 @protocol XYContainerViewDelegate, XYContainerViewDataSource;
 @interface XYContainerView : UIView
