@@ -25,6 +25,7 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
 @property (nonatomic, strong) UIView    *stickView;
 
 @property (nonatomic, assign) NSInteger subContainersCount;
+@property (nonatomic, assign) CGFloat contentOffsetY;
 
 @property (nonatomic, weak) UIScrollView *currentScrollView;
 
@@ -46,6 +47,7 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
         
         self.backgroundColor = [UIColor clearColor];
         self.subContainersCount = 0;
+        _horizonScrollEnable = YES;
         
         [self addSubview:self.containerView];
         [self addSubview:self.headContainerView];
@@ -139,6 +141,14 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
         self.containerView.contentOffset = CGPointMake(index*CGRectGetWidth(self.bounds), contentOffset.y);
         [self scrollViewDidEndDecelerating:self.containerView];
     }
+}
+
+- (void)setHorizonScrollEnable:(BOOL)horizonScrollEnable {
+    if (_horizonScrollEnable == horizonScrollEnable) {
+        return;
+    }
+    _horizonScrollEnable = horizonScrollEnable;
+    self.containerView.scrollEnabled = horizonScrollEnable;
 }
 
 #pragma mark - private

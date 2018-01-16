@@ -19,7 +19,9 @@
 /**
  偏移位置 值范围：x>= -(bannerViewHeight + stickViewHeight)
  */
-@property (nonatomic, assign) CGFloat contentOffsetY;
+@property (nonatomic, assign, readonly) CGFloat contentOffsetY;
+
+@property (nonatomic, assign) BOOL horizonScrollEnable;
 
 - (void)reloadData;
 
