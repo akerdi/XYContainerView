@@ -130,16 +130,20 @@ static NSString *XYCollectionCellId = @"XYCollectionCellId";
     }
     [self scrollViewWillBeginDragging:self.containerView];
     CGPoint contentOffset = self.containerView.contentOffset;
-    typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     if (animated) {
         [UIView animateWithDuration:0.2 animations:^{
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             weakSelf.containerView.contentOffset = CGPointMake(index*CGRectGetWidth(self.bounds), contentOffset.y);
         } completion:^(BOOL finished) {
             [weakSelf scrollViewDidEndDecelerating:self.containerView];
         }];
     } else {
-        self.containerView.contentOffset = CGPointMake(index*CGRectGetWidth(self.bounds), contentOffset.y);
-        [self scrollViewDidEndDecelerating:self.containerView];
+        [UIView animateWithDuration:0.001 animations:^{
+            weakSelf.containerView.contentOffset = CGPointMake(index*CGRectGetWidth(self.bounds), contentOffset.y);
+        } completion:^(BOOL finished) {
+            [weakSelf scrollViewDidEndDecelerating:self.containerView];
+        }];
     }
 }
 
