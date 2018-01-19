@@ -108,10 +108,12 @@
 
 static NSInteger _count = 0;
 - (void)gogogogo:(UIButton *)sender {
-    [self.containerView selectSectionAtIndex:_count animated:YES];
-    _count ++;
-    NSLog(@"1111111111");
-    [sender setTitle:[@(_count) stringValue] forState:UIControlStateNormal];
+//    [self.containerView selectSectionAtIndex:_count animated:YES];
+//    _count ++;
+//    NSLog(@"1111111111");
+//    [sender setTitle:[@(_count) stringValue] forState:UIControlStateNormal];
+    ViewController *viewC = [ViewController new];
+    [self.navigationController pushViewController:viewC animated:YES];
 }
 
 
