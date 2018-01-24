@@ -9,11 +9,11 @@
 #import "XYContainerView.h"
 
 static NSString *XYCollectionCellId = @"XYCollectionCellId";
-static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
+static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
 
 @interface XYCollectionCell : UICollectionViewCell
 
-@property (nonatomic, strong) UIView *subContainerView;
+@property (nonatomic, strong) UIView    *subContainerView;
 
 @end
 
@@ -26,7 +26,7 @@ static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
 @property (nonatomic, strong) UIView    *stickView;
 
 @property (nonatomic, assign) NSInteger subContainersCount;
-@property (nonatomic, assign) CGFloat contentOffsetY;
+@property (nonatomic, assign) CGFloat   contentOffsetY;
 
 @property (nonatomic, weak) UIScrollView *currentScrollView;
 
@@ -36,7 +36,7 @@ static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
 
 - (void)dealloc {
     UIScrollView *scrollView = (UIScrollView *)self.currentScrollView;
-    [scrollView removeObserver:self forKeyPath:TableViewContentOffsetKeyPath];
+    [scrollView removeObserver:self forKeyPath:XYTableViewContentOffsetKeyPath];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -47,6 +47,7 @@ static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
         _horizonScrollEnable = YES;
         
         [self addSubview:self.containerView];
+        self.containerView.frame = self.bounds;
         [self addSubview:self.headContainerView];
     }
     return self;
@@ -54,7 +55,6 @@ static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.containerView.frame = self.bounds;
 }
 
 #pragma mark - public
@@ -67,7 +67,7 @@ static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
         if ([subContainerView isKindOfClass:[UIScrollView class]]) {
             UIScrollView *subContainerScrollView = (UIScrollView *)subContainerView;
             if (i==0) {
-                [subContainerScrollView addObserver:self forKeyPath:TableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
+                [subContainerScrollView addObserver:self forKeyPath:XYTableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
                 self.currentScrollView = subContainerScrollView;
                 [subContainerScrollView addSubview:self.headContainerView];
                 CGRect rect = self.headContainerView.frame;
@@ -181,7 +181,6 @@ static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
 }
 
 - (void)targetScrollDidScrollInnerFunc {
-    
     UIScrollView *currentScrollView = self.currentScrollView;
     
     for (NSInteger i=0;i<self.subContainersCount;i++) {
@@ -200,7 +199,7 @@ static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
 #pragma mark - UICollectinoViewDataSource
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    self.currentScrollView.scrollEnabled = NO;
+    self.currentScrollView.userInteractionEnabled = NO;
     CGFloat maxTop = MAX(-(CGRectGetHeight(self.headContainerView.frame)+self.currentScrollView.contentOffset.y), -(CGRectGetHeight(self.headContainerView.frame)-CGRectGetHeight(self.stickView.frame)));
     CGRect rect = self.headContainerView.frame;
     rect.origin.y = maxTop;
@@ -216,15 +215,14 @@ static NSString *TableViewContentOffsetKeyPath = @"contentOffset";
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    self.currentScrollView.scrollEnabled = YES;
+    self.currentScrollView.userInteractionEnabled = YES;
     CGPoint offsetP = scrollView.contentOffset;
     NSInteger index = offsetP.x/CGRectGetWidth(self.bounds);
     XYCollectionCell *cell = (XYCollectionCell *)[self.containerView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    if (self.currentScrollView.observationInfo) {
-        [self.currentScrollView removeObserver:self forKeyPath:TableViewContentOffsetKeyPath];
-    }
+    [self.currentScrollView removeObserver:self forKeyPath:XYTableViewContentOffsetKeyPath];
+    
     self.currentScrollView = (UIScrollView *)cell.subContainerView;
-    [self.currentScrollView addObserver:self forKeyPath:TableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
+    [self.currentScrollView addObserver:self forKeyPath:XYTableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
     
     CGRect rect = self.headContainerView.frame;
     rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
