@@ -191,16 +191,24 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
         if ([self.delegate respondsToSelector:@selector(xyContainerViewCustomStickViewHeight:)]) {
             CGFloat customViewHeight = [self.delegate xyContainerViewCustomStickViewHeight:self];
             if (customViewHeight > 0) {
+//                currentScrollView 为开始拖拽时当前scrollView,
+//                判断其他当前subScrollView 偏移量是否小于customViewHeight
                 if (currentScrollView.contentOffset.y>=-customViewHeight) {
-                    subScrollView.contentOffset = CGPointMake(0, -customViewHeight);
+                    if (subScrollView.contentOffset.y<-customViewHeight) {
+                        subScrollView.contentOffset = CGPointMake(0, -customViewHeight);
+                    }
+                    continue;
                 } else {
                     subScrollView.contentOffset = currentScrollView.contentOffset;
                 }
-                return;
             }
         }
+//        同上
         if (currentScrollView.contentOffset.y>=-CGRectGetHeight(self.stickView.frame)) {
-            subScrollView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.stickView.frame));
+            if (subScrollView.contentOffset.y<-CGRectGetHeight(self.stickView.frame)) {
+                subScrollView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.stickView.frame));
+            }
+            continue;
         } else {
             subScrollView.contentOffset = currentScrollView.contentOffset;
         }
