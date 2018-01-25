@@ -188,6 +188,17 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
         if (subScrollView==currentScrollView) {
             continue;
         }
+        if ([self.delegate respondsToSelector:@selector(xyContainerViewCustomStickViewHeight:)]) {
+            CGFloat customViewHeight = [self.delegate xyContainerViewCustomStickViewHeight:self];
+            if (customViewHeight > 0) {
+                if (currentScrollView.contentOffset.y>=-customViewHeight) {
+                    subScrollView.contentOffset = CGPointMake(0, -customViewHeight);
+                } else {
+                    subScrollView.contentOffset = currentScrollView.contentOffset;
+                }
+                return;
+            }
+        }
         if (currentScrollView.contentOffset.y>=-CGRectGetHeight(self.stickView.frame)) {
             subScrollView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.stickView.frame));
         } else {

@@ -56,6 +56,15 @@
 
 
 /**
+ 用户自定义停留高度
+ 在用户左右滑动时会调用,来进行判断顶部固定高度位置
+
+ @param containerView <#containerView description#>
+ @return >0 有效
+ */
+- (CGFloat)xyContainerViewCustomStickViewHeight:(XYContainerView *)containerView;
+
+/**
  滑动回调
  方法来自于currentScrollView 的contentOffset 调用
 
