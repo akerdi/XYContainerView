@@ -234,6 +234,7 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    self.currentScrollView.userInteractionEnabled = YES;
     CGPoint targetOffset = *targetContentOffset;
     CGFloat offsetX = targetOffset.x;
     NSUInteger index = offsetX / CGRectGetWidth(self.bounds);
@@ -253,7 +254,11 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
     [self.currentScrollView addObserver:self forKeyPath:XYTableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
     
     CGRect rect = self.headContainerView.frame;
-    rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
+    if (self.stickView) {
+        rect.origin.y = -CGRectGetHeight(self.headContainerView.frame)+CGRectGetHeight(self.stickView.frame);
+    } else {
+        rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
+    }
     self.headContainerView.frame = rect;
     [self.currentScrollView addSubview:self.headContainerView];
 }
