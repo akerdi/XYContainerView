@@ -73,4 +73,12 @@
  */
 - (void)xyContainerView:(XYContainerView *)containerView scrollDidScroll:(UIScrollView *)scrollView;
 
+/**
+ 左右滑动，选中contentView 回调
+
+ @param containerView <#containerView description#>
+ @param index <#index description#>
+ */
+- (void)xyContainerView:(XYContainerView *)containerView didSelectContentAtIndex:(NSInteger)index;
+
 @end

@@ -233,6 +233,15 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
     self.headContainerView.frame = rect;
 }
 
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    CGPoint targetOffset = *targetContentOffset;
+    CGFloat offsetX = targetOffset.x;
+    NSUInteger index = offsetX / CGRectGetWidth(self.bounds);
+    if ([self.delegate respondsToSelector:@selector(xyContainerView:didSelectContentAtIndex:)]) {
+        [self.delegate xyContainerView:self didSelectContentAtIndex:index];
+    }
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     self.currentScrollView.userInteractionEnabled = YES;
     CGPoint offsetP = scrollView.contentOffset;
