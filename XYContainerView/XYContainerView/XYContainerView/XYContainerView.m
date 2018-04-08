@@ -53,10 +53,6 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
     return self;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-}
-
 #pragma mark - public
 
 - (void)reloadData {
