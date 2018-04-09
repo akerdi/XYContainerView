@@ -248,15 +248,6 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
     
     self.currentScrollView = (UIScrollView *)cell.subContainerView;
     [self.currentScrollView addObserver:self forKeyPath:XYTableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
-    
-    CGRect rect = self.headContainerView.frame;
-    if (self.stickView) {
-        rect.origin.y = -CGRectGetHeight(self.headContainerView.frame)+CGRectGetHeight(self.stickView.frame);
-    } else {
-        rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
-    }
-    self.headContainerView.frame = rect;
-    [self.currentScrollView addSubview:self.headContainerView];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
