@@ -258,7 +258,7 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
     XYCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:XYCollectionCellId forIndexPath:indexPath];
     UIView *subContainerView = [self.dataSource xyContainerView:self subContainerViewAtIndexPath:indexPath];
     if (cell.subContainerView!=subContainerView) {
-        [cell.subContainerView removeFromSuperview];
+//        [cell.subContainerView removeFromSuperview];
         [cell addSubview:subContainerView];
         cell.subContainerView = subContainerView;
     }
