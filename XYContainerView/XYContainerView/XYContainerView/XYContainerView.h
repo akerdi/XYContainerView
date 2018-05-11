@@ -58,6 +58,7 @@
 /**
  用户自定义停留高度
  在用户左右滑动时会调用,来进行判断顶部固定高度位置
+ 计算停留高度时,xyContainerViewWithStickView 优先级高于xyContainerViewCustomStickViewHeight
 
  @param containerView <#containerView description#>
  @return >0 有效

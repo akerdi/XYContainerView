@@ -184,11 +184,13 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
         if (subScrollView==currentScrollView) {
             continue;
         }
-        if ([self.delegate respondsToSelector:@selector(xyContainerViewCustomStickViewHeight:)]) {
-            CGFloat customViewHeight = [self.delegate xyContainerViewCustomStickViewHeight:self];
+        //有置顶层 使用置顶层高度
+        if ([self.delegate respondsToSelector:@selector(xyContainerViewWithStickView:)]) {
+            UIView *stickView = [self.delegate xyContainerViewWithStickView:self];
+            CGFloat customViewHeight = CGRectGetHeight(stickView.frame);
             if (customViewHeight > 0) {
-//                currentScrollView 为开始拖拽时当前scrollView,
-//                判断其他当前subScrollView 偏移量是否小于customViewHeight
+                //                currentScrollView 为开始拖拽时当前scrollView,
+                //                判断其他当前subScrollView 偏移量是否小于customViewHeight
                 if (currentScrollView.contentOffset.y>=-customViewHeight) {
                     if (subScrollView.contentOffset.y<-customViewHeight) {
                         subScrollView.contentOffset = CGPointMake(0, -customViewHeight);
@@ -198,7 +200,25 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
                     subScrollView.contentOffset = currentScrollView.contentOffset;
                 }
             }
+        } else {
+            //无置顶层 查看是否有提供类似置顶层高度方法
+            if ([self.delegate respondsToSelector:@selector(xyContainerViewCustomStickViewHeight:)]) {
+                CGFloat customViewHeight = [self.delegate xyContainerViewCustomStickViewHeight:self];
+                if (customViewHeight > 0) {
+                    //                currentScrollView 为开始拖拽时当前scrollView,
+                    //                判断其他当前subScrollView 偏移量是否小于customViewHeight
+                    if (currentScrollView.contentOffset.y>=-customViewHeight) {
+                        if (subScrollView.contentOffset.y<-customViewHeight) {
+                            subScrollView.contentOffset = CGPointMake(0, -customViewHeight);
+                        }
+                        continue;
+                    } else {
+                        subScrollView.contentOffset = currentScrollView.contentOffset;
+                    }
+                }
+            }
         }
+        
 //        同上
         if (currentScrollView.contentOffset.y>=-CGRectGetHeight(self.stickView.frame)) {
             if (subScrollView.contentOffset.y<-CGRectGetHeight(self.stickView.frame)) {
@@ -213,12 +233,16 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
 
 #pragma mark - UICollectinoViewDataSource
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    self.currentScrollView.userInteractionEnabled = NO;
+- (void)freshHeadContainerViewFrame {
     CGFloat maxTop = MAX(-(CGRectGetHeight(self.headContainerView.frame)+self.currentScrollView.contentOffset.y), -(CGRectGetHeight(self.headContainerView.frame)-CGRectGetHeight(self.stickView.frame)));
     CGRect rect = self.headContainerView.frame;
     rect.origin.y = maxTop;
     self.headContainerView.frame = rect;
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    self.currentScrollView.userInteractionEnabled = NO;
+    [self freshHeadContainerViewFrame];
     [self addSubview:self.headContainerView];
     [self targetScrollDidScrollInnerFunc];
 }
@@ -248,6 +272,7 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
     
     self.currentScrollView = (UIScrollView *)cell.subContainerView;
     [self.currentScrollView addObserver:self forKeyPath:XYTableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
+    [self freshHeadContainerViewFrame];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -258,7 +283,6 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
     XYCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:XYCollectionCellId forIndexPath:indexPath];
     UIView *subContainerView = [self.dataSource xyContainerView:self subContainerViewAtIndexPath:indexPath];
     if (cell.subContainerView!=subContainerView) {
-//        [cell.subContainerView removeFromSuperview];
         [cell addSubview:subContainerView];
         cell.subContainerView = subContainerView;
     }
