@@ -27,6 +27,7 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
 
 @property (nonatomic, assign) NSInteger subContainersCount;
 @property (nonatomic, assign) CGFloat   contentOffsetY;
+@property (nonatomic, copy) NSArray   <NSNumber *>*nextSectionWillAppeareNotifyStickerMoveArray;
 
 @property (nonatomic, weak) UIScrollView *currentScrollView;
 
@@ -35,13 +36,16 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
 @implementation XYContainerView
 
 - (void)dealloc {
+    [self removeCurrentScrollViewObserval];
+}
+
+- (void)removeCurrentScrollViewObserval {
     UIScrollView *scrollView = (UIScrollView *)self.currentScrollView;
     [scrollView removeObserver:self forKeyPath:XYTableViewContentOffsetKeyPath];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        
         self.backgroundColor = [UIColor clearColor];
         self.subContainersCount = 0;
         _horizonScrollEnable = YES;
@@ -56,24 +60,31 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
 #pragma mark - public
 
 - (void)reloadData {
+    //删除所有observal
+    [self removeCurrentScrollViewObserval];
+    //加载所有所需资源
     self.subContainersCount = [self calculateSubContainersCount];
     UIView *headContainerView = [self getHeadContainerView];
     for (NSInteger i=0; i<self.subContainersCount; i++) {
         UIView *subContainerView = [self.dataSource xyContainerView:self subContainerViewAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        if ([subContainerView isKindOfClass:[UIScrollView class]]) {
-            UIScrollView *subContainerScrollView = (UIScrollView *)subContainerView;
-            if (i==0) {
-                [subContainerScrollView addObserver:self forKeyPath:XYTableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
-                self.currentScrollView = subContainerScrollView;
-                [subContainerScrollView addSubview:self.headContainerView];
-                CGRect rect = self.headContainerView.frame;
-                rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
-                self.headContainerView.frame = rect;
-            }
-            UIEdgeInsets insets = subContainerScrollView.contentInset;
-            insets.top = CGRectGetHeight(headContainerView.frame);
-            subContainerScrollView.contentInset = UIEdgeInsetsMake(insets.top, insets.left, insets.bottom, insets.right);
+        UIScrollView *subContainerScrollView = (UIScrollView *)subContainerView;
+        if (![subContainerView isKindOfClass:[UIScrollView class]]) {
+            subContainerScrollView = [self.dataSource xyContainerView:self subScrollViewAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         }
+        if (i==0) {
+            [subContainerScrollView addObserver:self forKeyPath:XYTableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
+            self.currentScrollView = subContainerScrollView;
+            [subContainerScrollView addSubview:self.headContainerView];
+            CGRect rect = self.headContainerView.frame;
+            rect.origin.y = -CGRectGetHeight(self.headContainerView.frame);
+            self.headContainerView.frame = rect;
+        }
+        UIEdgeInsets insets = subContainerScrollView.contentInset;
+        insets.top = CGRectGetHeight(headContainerView.frame);
+        subContainerScrollView.contentInset = UIEdgeInsetsMake(insets.top, insets.left, insets.bottom, insets.right);
+    }
+    if ([self.delegate respondsToSelector:@selector(xyContainerViewShouldNotifyStickerBottomWhenNextSectionWillAppeareWithStickView:)]) {
+        self.nextSectionWillAppeareNotifyStickerMoveArray = [self.delegate xyContainerViewShouldNotifyStickerBottomWhenNextSectionWillAppeareWithStickView:self];
     }
     [self.containerView reloadData];
 }
@@ -90,9 +101,9 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
         if ([self.delegate respondsToSelector:@selector(xyContainerView:scrollDidScroll:)]) {
             [self.delegate xyContainerView:self scrollDidScroll:object];
         }
-        
+        [self notifySticker];
         CGRect rect = self.headContainerView.frame;
-        if (tableOffsetY>=-CGRectGetHeight(self.stickView.frame)) {
+        if (tableOffsetY >= -CGRectGetHeight(self.stickView.frame)) {
             if (self.headContainerView.superview==self) {
                 return;
             }
@@ -179,8 +190,8 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
 - (void)targetScrollDidScrollInnerFunc {
     UIScrollView *currentScrollView = self.currentScrollView;
     
-    for (NSInteger i=0;i<self.subContainersCount;i++) {
-        UIScrollView *subScrollView = (UIScrollView *)[self.dataSource xyContainerView:self subContainerViewAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+    for (NSInteger i=0; i<self.subContainersCount; i++) {
+        UIScrollView *subScrollView = (UIScrollView *)[self.dataSource xyContainerView:self subScrollViewAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         if (subScrollView==currentScrollView) {
             continue;
         }
@@ -207,8 +218,8 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
                 if (customViewHeight > 0) {
                     //                currentScrollView 为开始拖拽时当前scrollView,
                     //                判断其他当前subScrollView 偏移量是否小于customViewHeight
-                    if (currentScrollView.contentOffset.y>=-customViewHeight) {
-                        if (subScrollView.contentOffset.y<-customViewHeight) {
+                    if (currentScrollView.contentOffset.y >= -customViewHeight) {
+                        if (subScrollView.contentOffset.y < -customViewHeight) {
                             subScrollView.contentOffset = CGPointMake(0, -customViewHeight);
                         }
                         continue;
@@ -220,8 +231,8 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
         }
         
 //        同上
-        if (currentScrollView.contentOffset.y>=-CGRectGetHeight(self.stickView.frame)) {
-            if (subScrollView.contentOffset.y<-CGRectGetHeight(self.stickView.frame)) {
+        if (currentScrollView.contentOffset.y >= -CGRectGetHeight(self.stickView.frame)) {
+            if (subScrollView.contentOffset.y < -CGRectGetHeight(self.stickView.frame)) {
                 subScrollView.contentOffset = CGPointMake(0, -CGRectGetHeight(self.stickView.frame));
             }
             continue;
@@ -261,16 +272,16 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
     if ([self.delegate respondsToSelector:@selector(xyContainerView:didSelectContentAtIndex:)]) {
         [self.delegate xyContainerView:self didSelectContentAtIndex:index];
     }
+    [self notifySticker];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     self.currentScrollView.userInteractionEnabled = YES;
     CGPoint offsetP = scrollView.contentOffset;
     NSInteger index = offsetP.x/CGRectGetWidth(self.bounds);
-    XYCollectionCell *cell = (XYCollectionCell *)[self.containerView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     [self.currentScrollView removeObserver:self forKeyPath:XYTableViewContentOffsetKeyPath];
     
-    self.currentScrollView = (UIScrollView *)cell.subContainerView;
+    self.currentScrollView = [self.dataSource xyContainerView:self subScrollViewAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     [self.currentScrollView addObserver:self forKeyPath:XYTableViewContentOffsetKeyPath options:NSKeyValueObservingOptionNew context:@selector(reloadData)];
     [self freshHeadContainerViewFrame];
 }
@@ -282,14 +293,41 @@ static NSString *XYTableViewContentOffsetKeyPath = @"contentOffset";
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     XYCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:XYCollectionCellId forIndexPath:indexPath];
     UIView *subContainerView = [self.dataSource xyContainerView:self subContainerViewAtIndexPath:indexPath];
-    if (cell.subContainerView!=subContainerView) {
+    if (cell.subContainerView != subContainerView) {
         [cell addSubview:subContainerView];
         cell.subContainerView = subContainerView;
     }
     return cell;
 }
 
-#pragma mark - Accessory
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.nextSectionWillAppeareNotifyStickerMoveArray.count) {
+        for (NSNumber *number in self.nextSectionWillAppeareNotifyStickerMoveArray) {
+            if ([number integerValue] == indexPath.row) {
+                [self notifyStickerWithIndex:indexPath.row];
+                return;
+            }
+        }
+    }
+}
+
+
+#pragma mark - Accessory & helper
+
+- (void)notifySticker {
+    CGPoint offsetP = self.containerView.contentOffset;
+    NSInteger index = offsetP.x/CGRectGetWidth(self.bounds);
+    [self notifyStickerWithIndex:index];
+    
+}
+
+- (void)notifyStickerWithIndex:(NSInteger)index {
+    if ([self.delegate respondsToSelector:@selector(xyContainer:currentIndex:stickerBottom:)]) {
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        CGRect stickViewRect = [self.stickView.superview convertRect:self.stickView.frame toView:window];
+        [self.delegate xyContainer:self currentIndex:index stickerBottom:CGRectGetMaxY(stickViewRect)];
+    }
+}
 
 - (UIView *)headContainerView {
     if (!_headContainerView) {

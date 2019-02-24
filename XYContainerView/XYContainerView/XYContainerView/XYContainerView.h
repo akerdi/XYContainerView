@@ -27,7 +27,7 @@
 
 /**
  指定滑动
-
+ 
  @param index 0~(dataSource count-1)
  @param animated <#index description#>
  */
@@ -42,6 +42,14 @@
 
 - (UIView *)xyContainerView:(XYContainerView *)containerView subContainerViewAtIndexPath:(NSIndexPath *)indexPath;
 
+- (UIScrollView *)xyContainerView:(XYContainerView *)containerView subScrollViewAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ 返回真实有效scrollView
+ 
+ @param containerView <#containerView description#>
+ @return <#return value description#>
+ */
 - (NSInteger)xyContainerViewWithNumberOfSubContainerView:(XYContainerView *)containerView;
 
 @end
@@ -56,10 +64,26 @@
 
 
 /**
+ 当下个section将要出现时，同时您想要通知sticker 底部位置相对keyWindow 位置时提供
+ 
+ @return integer 数组
+ */
+- (NSArray <NSNumber *>*)xyContainerViewShouldNotifyStickerBottomWhenNextSectionWillAppeareWithStickView:(XYContainerView *)containerView;
+
+/**
+ headerContainer 偏移时触发
+ 
+ @param containerView <#containerView description#>
+ @param currentIndex <#currentIndex description#>
+ @param stickerBottom <#stickerBottom description#>
+ */
+- (void)xyContainer:(XYContainerView *)containerView currentIndex:(NSInteger)currentIndex stickerBottom:(CGFloat)stickerBottom;
+
+/**
  用户自定义停留高度
  在用户左右滑动时会调用,来进行判断顶部固定高度位置
  计算停留高度时,xyContainerViewWithStickView 优先级高于xyContainerViewCustomStickViewHeight
-
+ 
  @param containerView <#containerView description#>
  @return >0 有效
  */
@@ -68,7 +92,7 @@
 /**
  滑动回调
  方法来自于currentScrollView 的contentOffset 调用
-
+ 
  @param containerView <#containerView description#>
  @param scrollView 该对象为tableV|tableV|tableV 中某个
  */
@@ -76,10 +100,12 @@
 
 /**
  左右滑动，选中contentView 回调
-
+ 
  @param containerView <#containerView description#>
  @param index <#index description#>
  */
 - (void)xyContainerView:(XYContainerView *)containerView didSelectContentAtIndex:(NSInteger)index;
+
+
 
 @end
